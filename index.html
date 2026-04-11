@@ -937,6 +937,22 @@ const CREDITS = [
    note:`Changed from $125 statement credit to $200 United TravelBank cash as of Mar 24, 2025. TravelBank cash applies to future United bookings at united.com. Your card opened Jun 24, 2025 so benefit year runs Jun 24, 2026. Check your MileagePlus account for current TravelBank balance.`,
    txns:[], src:'https://creditcards.chase.com/travel-credit-cards/united/united-quest'},
 
+  {id:'uq-avis-2026', card:'United Quest', issuer:'chase', cat:'travel',
+   name:'$80 Avis/Budget Rental Credit — 2026', amount:80, cadence:'anniversary-year', cadLabel:'Anniversary Year',
+   urgency:'low', due:'Jun 24, 2027', dueClass:'',
+   conf:'unclaimed', confLabel:'No Avis/Budget rental detected',
+   trigger:`Book a car rental through cars.united.com using Avis or Budget. Pay with your United Quest card. Statement credit posts automatically. Up to $80/anniversary year.`,
+   note:`New benefit added in the April 2026 United card overhaul. Book through cars.united.com (not directly on Avis/Budget site) to qualify. Pure upside if you rent a car through United anyway.`,
+   txns:[], src:'https://www.dailydrop.com/pages/united-card-overhaul'},
+
+  {id:'uq-jsx-2026', card:'United Quest', issuer:'chase', cat:'travel',
+   name:'$150 JSX Credit — 2026', amount:150, cadence:'anniversary-year', cadLabel:'Anniversary Year',
+   urgency:'low', due:'Jun 24, 2027', dueClass:'',
+   conf:'unclaimed', confLabel:'No JSX charges detected',
+   trigger:`Purchase JSX flights using your United Quest card. Up to $150 back as a statement credit per anniversary year. JSX operates semi-private flights out of private terminals — no TSA lines.`,
+   note:`New benefit added in the April 2026 United card overhaul. JSX flies between major city pairs (Dallas, LA, Las Vegas, NYC, Miami, etc.) from private terminals. If you ever fly a JSX route, this covers most of a ticket. Not actionable unless your travel routes align.`,
+   txns:[], src:'https://www.dailydrop.com/pages/united-card-overhaul'},
+
 
   // ── CHASE SAPPHIRE PREFERRED ─────────────────────────────────
   {id:'csp-dashpass-apr', card:'Chase Sapphire Preferred', issuer:'chase', cat:'food',
@@ -952,17 +968,33 @@ const CREDITS = [
    urgency:'warning', due:'Apr 8, 2027', dueClass:'warn',
    conf:'unclaimed', confLabel:'Not detected yet — window just opened Apr 8',
    trigger:`Book a hotel through Chase Travel (chase.com/travel). $50 credit applies to hotels booked through Chase portal only. Resets on cardmember anniversary (Apr 8). Window just opened.`,
-   note:`CSP annual fee ($95) ALREADY POSTED ~Apr 8, 2026 — you have until ~May 8 to cancel for a full refund if you want out. At +$115 net ($210 credits − $95 fee), it's a keeper if you use Instacart monthly and book one hotel via Chase Travel. The $50 hotel credit resets on your cardmember anniversary (Apr 8), so the 2026 credit window just opened.`,
+   note:`CSP annual fee ($95) ALREADY POSTED ~Apr 8, 2026 — you have until ~May 8 to cancel for a full refund if you want out. At +$215 net ($310 credits − $95 fee) with WHOOP included, it's a keeper. Credits: $10/mo DashPass ($120), $50 Chase Travel hotel, $15/quarter Instacart ($60), $100 WHOOP Chase Offer = $330 total minus $95 fee. The $50 hotel credit resets on your cardmember anniversary (Apr 8), so the 2026 credit window just opened.`,
    txns:[], src:'https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred'},
 
+  {id:'csp-instacart-q2', card:'Chase Sapphire Preferred', issuer:'chase', cat:'food',
+   name:'Instacart Credit — Q2 ($15)', amount:15, cadence:'quarterly', cadLabel:'Quarterly',
+   urgency:'warning', due:'Jun 30, 2026', dueClass:'warn',
+   conf:'unclaimed', confLabel:'No Q2 Instacart charges detected on CSP',
+   trigger:`Up to $15/quarter in Instacart statement credits. Enroll CSP at instacart.com/partnerships/chase and use for any Instacart order while Instacart+ is active. Through Dec 31, 2027.`,
+   note:`CSP has a separate quarterly Instacart credit ($15/quarter = $60/year) distinct from your other Instacart credits on Ink and UQ. This is easy to miss since most Instacart spend may already be going to your Ink cards. Use CSP for one Instacart order in Q2 before Jun 30.`,
+   txns:[], src:'https://thepointsguy.com/deals/instacart-express-chase/'},
+
+  {id:'csp-whoop-2026', card:'Chase Sapphire Preferred', issuer:'chase', cat:'streaming',
+   name:'WHOOP Membership Credit ($100)', amount:100, cadence:'one-time', cadLabel:'One-Time',
+   urgency:'critical', due:'May 12, 2026', dueClass:'urgent',
+   conf:'unclaimed', confLabel:'Not yet activated or purchased',
+   trigger:`Activate the WHOOP offer in Chase Offers BEFORE purchasing. Then buy any WHOOP annual membership at whoop.com using your CSP card. $100 statement credit posts 5–7 business days after purchase. One-time use.`,
+   note:`CSP gets $100 back on any WHOOP annual membership (cheapest tier is $149/year, so net $49). Must activate via Chase Offers first — purchases before activation are NOT eligible. Deadline is May 12, 2026. Existing WHOOP members can use it at renewal or by gifting.`,
+   txns:[], src:'https://www.whoop.com/us/en/chase-sapphire/'},
+
   // ── FREEDOM FLEX ────────────────────────────────────────────
-  {id:'flex-dashpass-apr', card:'Freedom Flex', issuer:'chase', cat:'food',
-   name:'DashPass Monthly Credit — April ($10)', amount:10, cadence:'monthly', cadLabel:'Monthly',
-   urgency:'critical', due:'Apr 30, 2026', dueClass:'urgent',
-   conf:'unclaimed', confLabel:'No DoorDash charges detected this month',
-   trigger:`Same as CSP — DashPass credit applies on Freedom Flex too. $10/month via DoorDash. Make sure this card is enrolled in DashPass.`,
-   note:`No DoorDash spend detected on Freedom Flex this month. Expires Apr 30 — use DoorDash before month-end to claim.`,
-   txns:[], src:'https://creditcards.chase.com/cash-back-credit-cards/freedom/flex'},
+  {id:'flex-dashpass-q2', card:'Freedom Flex', issuer:'chase', cat:'food',
+   name:'DashPass Grocery Credit — Q2 ($10)', amount:10, cadence:'quarterly', cadLabel:'Quarterly',
+   urgency:'warning', due:'Jun 30, 2026', dueClass:'warn',
+   conf:'unclaimed', confLabel:'No qualifying DoorDash charges detected',
+   trigger:`Use DoorDash for grocery, convenience, or retail orders while enrolled in DashPass. $10 off per quarter — must be toggled on at checkout. Applies to non-restaurant orders only (groceries, pharmacy, DashMart). Enroll DashPass via Chase app or doordash.com.`,
+   note:`Freedom Flex gets $10/quarter on non-restaurant DoorDash orders — NOT $10/month. This is a Q2 (Apr–Jun) credit, due Jun 30. Use one qualifying grocery or convenience order before Jun 30. Toggle "Chase monthly benefit" at checkout.`,
+   txns:[], src:'https://www.chase.com/digital/resources/terms-of-use/freedom-doordash'},
 
   // ── INK CASH ─────────────────────────────────────────────────
   {id:'ink-instacart-apr', card:'Ink Cash ·2379', issuer:'chase', cat:'food',
@@ -1069,7 +1101,7 @@ const RENEWALS = [
     date:'~Apr 8, 2026',
     status:'posted',
     statusLabel:'POSTED — Act by ~May 8',
-    cancelWindow:`Annual fee of $95 already posted ~Apr 8. Cancel by ~May 8 for full refund. Net value: +$115 ($210 credits − $95 fee) if you use Instacart monthly + one Chase Travel hotel.`,
+    cancelWindow:`Annual fee of $95 already posted ~Apr 8. Cancel by ~May 8 for full refund. Net value: +$215 ($310 credits − $95 fee): $120 DashPass monthly, $50 hotel, $60 Instacart quarterly, $100 WHOOP Chase Offer. Strong keeper.`,
     cancelUrgent:true,
     src:'https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred'
   },
@@ -1080,7 +1112,7 @@ const RENEWALS = [
     date:'Jun 24, 2026',
     status:'soon',
     statusLabel:'~75 days away',
-    cancelWindow:`$350 annual fee posts Jun 24, 2026. Benefits include $200 United TravelBank cash (posts automatically when using card on United purchases), 2 free checked bags, Instacart $15/mo, rideshare $8/mo. Evaluate net value vs. fee before renewal.`,
+    cancelWindow:`$350 annual fee posts Jun 24, 2026. Credits: $200 TravelBank, $100 rideshare, $180 Instacart, $80 Avis/Budget, $150 JSX = $710 in credits if fully used. Plus 2 free checked bags. Evaluate which credits you’ll realistically use before renewal.`,
     cancelUrgent:false,
     src:'https://creditcards.chase.com/travel-credit-cards/united/united-quest'
   },
@@ -1143,6 +1175,9 @@ const CARDS = [
     benefits:[
       {name:'Rideshare Credit (Apr)', period:'Monthly', status:'likely', statusLabel:'~$8 earned Apr'},
       {name:'Instacart $10+$5 (Apr)', period:'Monthly', status:'likely', statusLabel:'~$15 visible Apr'},
+      {name:'$200 TravelBank — 2026', period:'Anniversary Year', status:'warn', statusLabel:'Unclaimed'},
+      {name:'$80 Avis/Budget Credit', period:'Anniversary Year', status:'muted', statusLabel:'New — book via cars.united.com'},
+      {name:'$150 JSX Credit', period:'Anniversary Year', status:'muted', statusLabel:'New — if route aligns'},
       {name:'Rideshare Credit (Jan–Mar)', period:'Monthly', status:'ok', statusLabel:'✅ $24 earned'},
       {name:'Instacart (Jan–Mar)', period:'Monthly', status:'ok', statusLabel:'✅ $45 earned'},
     ]
@@ -1155,6 +1190,8 @@ const CARDS = [
     benefits:[
       {name:'DashPass Credit (Apr)', period:'Monthly', status:'warn', statusLabel:'Unclaimed — due Apr 30'},
       {name:'$50 Chase Travel Hotel', period:'Anniversary Year', status:'warn', statusLabel:'Window just opened Apr 8'},
+      {name:'WHOOP $100 Credit', period:'One-Time', status:'urgent', statusLabel:'Unclaimed — expires May 12'},
+      {name:'Instacart Credit Q2 ($15)', period:'Quarterly', status:'warn', statusLabel:'Unclaimed — due Jun 30'},
     ]
   },
   {
@@ -1163,7 +1200,7 @@ const CARDS = [
     annualFee:0,
     feeDate:'No annual fee',
     benefits:[
-      {name:'DashPass Credit (Apr)', period:'Monthly', status:'warn', statusLabel:'Unclaimed — due Apr 30'},
+      {name:'DashPass Credit Q2 ($10)', period:'Quarterly', status:'warn', statusLabel:'Unclaimed — due Jun 30'},
     ]
   },
   {
