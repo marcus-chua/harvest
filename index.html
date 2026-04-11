@@ -267,9 +267,9 @@
 
     .credit-header {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 12px;
-      padding: 12px 16px 8px;
+      padding: 14px 16px;
       cursor: pointer;
     }
     .urgency-dot {
@@ -277,7 +277,7 @@
       height: 8px;
       border-radius: 50%;
       flex-shrink: 0;
-      margin-top: 5px;
+      margin-top: 7px;
     }
     .urgency-dot.urgent { background: var(--error); }
     .urgency-dot.warning { background: var(--warning); }
@@ -296,14 +296,21 @@
     .credit-card-name {
       font-size: 12px;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 1px;
     }
+    .credit-due-inline {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .credit-due-inline .due-urgent { color: var(--error); font-weight: 600; }
     .credit-right {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 2px;
+      gap: 4px;
       flex-shrink: 0;
+      padding-top: 1px;
     }
     .credit-amount {
       font-size: 18px;
@@ -335,12 +342,7 @@
     .tag-limited { background: rgba(209,153,0,0.10); color: var(--gold); }
     .tag-calendar { background: rgba(0,100,148,0.08); color: #006494; }
 
-    .credit-due {
-      font-size: 11px;
-      color: var(--text-muted);
-      padding: 0 16px 10px 36px;
-    }
-    .credit-due .due-urgent { color: var(--error); font-weight: 600; }
+    .credit-due { display: none; } /* replaced by inline due date */
 
     .credit-body {
       padding: 0 16px 14px;
@@ -1238,7 +1240,7 @@ let showExpired = false;
 let showHarvested = false;
 
 function isClaimed(k) { return !!claimState[k]; }
-function toggleClaim(k) { claimState[k] = !claimState[k]; renderAll(); }
+function toggleClaim(k) { claimState[k] = !claimState[k]; renderAll(); initKPIs(); }
 
 // ═══════════════════════════════════════════════════════════════
 // CREDITS TAB
@@ -1281,7 +1283,7 @@ function renderCredits() {
         name: c.name,
         amount: c.amount,
         date: isoDate,
-        claimedLabel: isClaimed(c.id) ? 'Marked claimed' : 'Credit posted',
+        claimedLabel: isClaimed(c.id) ? 'Harvested' : 'Credit posted',
         cat: c.cat,
       };
     });
@@ -1398,7 +1400,7 @@ function renderCreditCard(c) {
 
   const srcHtml = c.src ? `<a class="src-link" href="${c.src}" target="_blank" rel="noopener">↗ Source</a>` : '';
 
-  const claimLabel = claimed ? '✓ Marked Claimed' : 'Mark Claimed';
+  const claimLabel = claimed ? '✓ Harvested' : 'Mark Harvested';
   const claimBtnClass = claimed ? 'claim-btn claimed' : 'claim-btn';
 
   return `
@@ -1408,6 +1410,7 @@ function renderCreditCard(c) {
       <div class="credit-meta">
         <div class="credit-name">${c.name}</div>
         <div class="credit-card-name">${cardDisplayName}</div>
+        <div class="credit-due-inline">Due: <span class="${c.dueClass === 'urgent' ? 'due-urgent' : ''}">${c.due}</span></div>
       </div>
       <div class="credit-right">
         ${c.amount > 0 ? `<div class="${amtClass}">$${c.amount.toFixed(0)}</div>` : ''}
@@ -1415,9 +1418,6 @@ function renderCreditCard(c) {
           ${confTag}
         </div>
       </div>
-    </div>
-    <div class="credit-due">
-      Due: <span class="${c.dueClass === 'urgent' ? 'due-urgent' : ''}">${c.due}</span>
     </div>
     <div class="credit-body" id="body-${c.id}">
       ${triggerHtml}
@@ -1495,10 +1495,15 @@ function initKPIs() {
   const expiringVal = expiring.reduce((s, c) => s + c.amount, 0);
   document.getElementById('kpi-expiring').textContent = '$' + expiringVal.toFixed(0);
 
-  // Total harvested: sum HARVESTED array + confirmed auto-migrated credits
+  // Total harvested: HARVESTED array + confirmed auto-migrated + manually claimed
   const harvestedFixed = HARVESTED.reduce((s, h) => s + (h.amount || 0), 0);
   const confirmedVal = CREDITS.filter(c => c.conf === 'confirmed').reduce((s, c) => s + c.amount, 0);
-  document.getElementById('kpi-harvested').textContent = '$' + (harvestedFixed + confirmedVal).toFixed(0);
+  const manualVal = CREDITS.filter(c => isClaimed(c.id) && c.conf !== 'confirmed').reduce((s, c) => s + c.amount, 0);
+  document.getElementById('kpi-harvested').textContent = '$' + (harvestedFixed + confirmedVal + manualVal).toFixed(0);
+
+  // Also update unclaimed to reflect manual claims
+  const unclaimed = CREDITS.filter(c => c.conf !== 'confirmed' && !isClaimed(c.id) && !isExpired(c) && c.amount > 0);
+  document.getElementById('kpi-unclaimed').textContent = '$' + unclaimed.reduce((s,c) => s + c.amount, 0).toFixed(0);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1664,6 +1669,7 @@ function toggleHarvested() {
 function unmarkClaimed(id) {
   claimState[id] = false;
   renderAll();
+  initKPIs();
 }
 
 function resolveUnresolved(id, actionIdx) {
