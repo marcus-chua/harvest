@@ -334,6 +334,7 @@
     .tag-confirmed { background: rgba(67,122,34,0.10); color: var(--success); }
     .tag-unclaimed { background: rgba(150,66,25,0.08); color: var(--warning); }
     .tag-expired { background: rgba(186,185,180,0.20); color: var(--text-faint); }
+    .tag-clawed-back { background: rgba(161,44,123,0.10); color: var(--error); }
     .tag-claimed-manual { background: rgba(67,122,34,0.12); color: var(--success); }
     .tag-harvested { background: rgba(209,153,0,0.12); color: var(--gold); }
     .tag-monthly { background: rgba(1,105,111,0.06); color: var(--primary); }
@@ -537,6 +538,14 @@
       opacity: 0.7;
     }
     .ct-pill.historical .ct-pill-dot { background: var(--text-faint); }
+    .ct-pill.clawed {
+      background: rgba(161,44,123,0.10);
+      color: var(--error);
+      border-color: rgba(161,44,123,0.20);
+      text-decoration: line-through;
+      text-decoration-color: rgba(161,44,123,0.5);
+    }
+    .ct-pill.clawed .ct-pill-dot { background: var(--error); }
 
     /* ─── NO-HARVEST FOOTNOTE ─────────────────────────────────── */
     .no-harvest-header {
@@ -898,12 +907,13 @@ const CREDITS = [
   {id:'delta-stays', card:'Delta Gold Business', issuer:'amex', cat:'hotel',
    name:'$150 Delta Stays Credit — 2026', amount:150, cadence:'calendar-year', cadLabel:'Calendar Year',
    urgency:'low', due:'Dec 31, 2026', dueClass:'',
-   conf:'confirmed', confLabel:'TRANSFER_IN −$150 on 3/12 = credit claimed',
-   trigger:`Book a prepaid hotel or vacation rental at delta.com/stays. Select "Pay Now". Booking date (not travel date) triggers credit. Can split across multiple bookings.`,
-   note:`✅ Credit earned: Delta charge $230.23 on 3/11 triggered the $150 Delta Stays statement credit, which posted as TRANSFER_IN −$150 on 3/12. Full $150 claimed for 2026 — no further action needed this year.`,
+   conf:'clawed-back', confLabel:'Credit posted 3/12, reversed 3/13 — duplicate of card #2',
+   trigger:`Book a prepaid hotel or vacation rental at delta.com/stays. Select "Pay Now". Booking date (not travel date) triggers credit. Amex limits this credit to one per cardmember per calendar year, regardless of how many Delta cards you hold.`,
+   note:`⚠️ Credit was clawed back. Delta charge $230.23 on 3/11 triggered the credit (−$150 TRANSFER_IN posted 3/12), but Amex reversed it on 3/13 (+$150 LOAN_PAYMENTS) because the Delta Gold #2 card had already triggered its own −$150 credit on 3/12. Amex enforces one Delta Stays credit per cardmember per year across all Delta cards. Net for 2026: $150 retained on card #2, $0 on this card.`,
    txns:[
      {date:'2026-03-11', merchant:'Delta', amt:230.23, note:'Delta Stays charge — triggered credit'},
      {date:'2026-03-12', merchant:'Statement Credit', amt:-150.00, note:'TRANSFER_IN — Delta Stays $150 credit posted'},
+     {date:'2026-03-13', merchant:'Statement Credit (reversal)', amt:150.00, note:'LOAN_PAYMENTS — Amex clawed back the $150 (duplicate)'},
    ], src:'https://thepointsguy.com/credit-cards/delta-amex-stays-credit/'},
 
   // ── UNITED QUEST ────────────────────────────────────────────
@@ -1040,10 +1050,13 @@ const CREDITS = [
   {id:'delta2-stays', card:'Delta Gold Business #2', issuer:'amex', cat:'hotel',
    name:'$150 Delta Stays Credit — 2026', amount:150, cadence:'calendar-year', cadLabel:'Calendar Year',
    urgency:'low', due:'Dec 31, 2026', dueClass:'',
-   conf:'unclaimed', confLabel:'No Delta Stays booking detected yet',
-   trigger:`Book a prepaid hotel or vacation rental at delta.com/stays. Same credit as Delta Gold main card.`,
-   note:`Delta Gold Business #2 (opened Jan 14, 2026). Same $150 Delta Stays credit as the main card — book a prepaid hotel/vacation rental at delta.com/stays before Dec 31, 2026.`,
-   txns:[], src:'https://www.americanexpress.com/en-us/business/credit-cards/delta-skymiles-gold/'},
+   conf:'confirmed', confLabel:'TRANSFER_IN −$150 on 3/12 retained — credit claimed',
+   trigger:`Book a prepaid hotel or vacation rental at delta.com/stays. Same credit as Delta Gold main card. Amex limits this credit to one per cardmember per year across all Delta cards — only one card will retain it.`,
+   note:`✅ Credit earned: Delta charge $230.23 on 3/12 triggered the $150 Delta Stays statement credit, which posted as TRANSFER_IN −$150 on 3/12 and was retained. The duplicate posting on Delta Gold #1 was reversed by Amex (one credit per cardmember per year). Full $150 claimed for 2026 on this card — no further action needed this year.`,
+   txns:[
+     {date:'2026-03-12', merchant:'Delta', amt:230.23, note:'Delta Stays charge — triggered credit on card #2'},
+     {date:'2026-03-12', merchant:'Statement Credit', amt:-150.00, note:'TRANSFER_IN — Delta Stays $150 credit posted (retained)'},
+   ], src:'https://www.americanexpress.com/en-us/business/credit-cards/delta-skymiles-gold/'},
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -1135,7 +1148,7 @@ const RENEWALS = [
     date:'Nov 2026 (est.)',
     status:'upcoming',
     statusLabel:'~7 months away',
-    cancelWindow:`$150 annual fee was waived Year 1 (opened Nov 29, 2025). First fee posts Nov 2026. Delta Stays $150 credit already claimed — offsets fee if booked annually. Evaluate before Nov 2026.`,
+    cancelWindow:`$150 annual fee was waived Year 1 (opened Nov 29, 2025). First fee posts Nov 2026. ⚠️ Delta Stays $150 credit was clawed back this year (duplicate of card #2 — Amex enforces one credit per cardmember per year across all Delta cards). Net 2026 value on this card is $0. Strong candidate to cancel before Nov 2026 unless you plan to use the limited-time Uber One credit.`,
     cancelUrgent:false,
     src:'https://www.americanexpress.com/en-us/business/credit-cards/delta-skymiles-gold/'
   },
@@ -1146,7 +1159,7 @@ const RENEWALS = [
     date:'Jan 2027 (est.)',
     status:'upcoming',
     statusLabel:'~9 months away',
-    cancelWindow:`$150 annual fee waived Year 1 (opened Jan 14, 2026). First fee posts Jan 2027. Delta Stays $150 credit offsets fee if booked annually. Evaluate before Jan 2027.`,
+    cancelWindow:`$150 annual fee waived Year 1 (opened Jan 14, 2026). First fee posts Jan 2027. ✅ $150 Delta Stays credit retained on this card for 2026 (the duplicate posting on card #1 was reversed). Offsets fee if booked annually. Evaluate before Jan 2027.`,
     cancelUrgent:false,
     src:'https://www.americanexpress.com/en-us/business/credit-cards/delta-skymiles-gold/'
   },
@@ -1240,7 +1253,7 @@ const CARDS = [
     annualFee:150,
     feeDate:'Nov 2026 (Y2)',
     benefits:[
-      {name:'$150 Delta Stays — 2026', period:'Calendar Year', status:'ok', statusLabel:'✅ Claimed Mar 12'},
+      {name:'$150 Delta Stays — 2026', period:'Calendar Year', status:'clawed', statusLabel:'Clawed back — duplicate'},
       {name:'Uber One (up to 6mo)', period:'Limited Time', status:'urgent', statusLabel:'Enroll by Jun 25, 2026'},
     ]
   },
@@ -1250,7 +1263,7 @@ const CARDS = [
     annualFee:150,
     feeDate:'Jan 2027 (Y2)',
     benefits:[
-      {name:'$150 Delta Stays — 2026', period:'Calendar Year', status:'warn', statusLabel:'Unclaimed — verify real card'},
+      {name:'$150 Delta Stays — 2026', period:'Calendar Year', status:'ok', statusLabel:'✅ Claimed Mar 12 (retained)'},
     ]
   },
 ];
@@ -1370,7 +1383,7 @@ function renderCredits() {
 
   // Filter
   if (catFilter !== 'all') items = items.filter(c => c.cat === catFilter);
-  if (!showExpired) items = items.filter(c => !isExpired(c));
+  if (!showExpired) items = items.filter(c => !isExpired(c) && c.conf !== 'clawed-back');
 
   // Sort
   if (sortMode === 'date') {
@@ -1394,8 +1407,8 @@ function renderCredits() {
   list.innerHTML = items.map(c => renderCreditCard(c)).join('');
   updateKPIs(items);
 
-  // Show/hide the "Show Expired" button based on whether expired credits exist
-  const hasExpired = CREDITS.some(c => isExpired(c));
+  // Show/hide the "Show Expired" button based on whether expired or clawed-back credits exist
+  const hasExpired = CREDITS.some(c => isExpired(c) || c.conf === 'clawed-back');
   const expiredBtn = document.getElementById('toggle-expired');
   if (expiredBtn) expiredBtn.style.display = hasExpired ? '' : 'none';
 }
@@ -1488,11 +1501,13 @@ function getConfTag(c, claimed) {
     'confirmed': 'tag-confirmed',
     'likely': 'tag-likely',
     'unclaimed': 'tag-unclaimed',
+    'clawed-back': 'tag-clawed-back',
   };
   const labels = {
     'confirmed': 'Credit posted',
     'likely': 'Spend detected',
     'unclaimed': 'Unclaimed',
+    'clawed-back': 'Clawed back',
   };
   return `<span class="tag ${map[c.conf] || 'tag-unclaimed'}">${labels[c.conf] || c.conf}</span>`;
 }
@@ -1520,7 +1535,7 @@ function updateKPIs(items) {
 
 function initKPIs() {
   // Always computed from full CREDITS, ignoring view state
-  const active = CREDITS.filter(c => c.conf !== 'confirmed' && !isExpired(c) && c.amount > 0);
+  const active = CREDITS.filter(c => c.conf !== 'confirmed' && c.conf !== 'clawed-back' && !isExpired(c) && c.amount > 0);
   const total = active.reduce((s, c) => s + c.amount, 0);
   document.getElementById('kpi-unclaimed').textContent = '$' + total.toFixed(0);
 
@@ -1540,7 +1555,7 @@ function initKPIs() {
   document.getElementById('kpi-harvested').textContent = '$' + (harvestedFixed + confirmedVal + manualVal).toFixed(0);
 
   // Also update unclaimed to reflect manual claims
-  const unclaimed = CREDITS.filter(c => c.conf !== 'confirmed' && !isClaimed(c.id) && !isExpired(c) && c.amount > 0);
+  const unclaimed = CREDITS.filter(c => c.conf !== 'confirmed' && c.conf !== 'clawed-back' && !isClaimed(c.id) && !isExpired(c) && c.amount > 0);
   document.getElementById('kpi-unclaimed').textContent = '$' + unclaimed.reduce((s,c) => s + c.amount, 0).toFixed(0);
 }
 
