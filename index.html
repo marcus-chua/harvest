@@ -794,7 +794,7 @@
       </svg>
       Orchard
     </div>
-    <div class="header-meta">Last synced: Apr 10, 2026</div>
+    <div class="header-meta">Last synced: Jun 28, 2026</div>
   </div>
 
   <div class="kpi-strip">
@@ -806,7 +806,7 @@
     <div class="kpi">
       <div class="kpi-label">Expiring This Month</div>
       <div class="kpi-value" id="kpi-expiring">—</div>
-      <div class="kpi-sub">due by Apr 30</div>
+      <div class="kpi-sub">due by Jun 30</div>
     </div>
     <div class="kpi">
       <div class="kpi-label">Cards Tracked</div>
@@ -815,8 +815,8 @@
     </div>
     <div class="kpi">
       <div class="kpi-label">Total Harvested</div>
-      <div class="kpi-value gold" id="kpi-harvested">$389</div>
-      <div class="kpi-sub">Jan–Apr 2026</div>
+      <div class="kpi-value gold" id="kpi-harvested">$—</div>
+      <div class="kpi-sub">Jan–Jun 2026</div>
     </div>
   </div>
 
@@ -890,173 +890,202 @@ const CREDITS = [
   {id:'hil-q2', card:'Hilton Honors Business', issuer:'amex', cat:'hotel',
    name:'Q2 Hilton Credit — APR–JUN', amount:60, cadence:'quarterly', cadLabel:'Quarterly',
    urgency:'critical', due:'Jun 30, 2026', dueClass:'urgent',
-   conf:'unclaimed', confLabel:'No Q2 Hilton charges yet',
+   conf:'unclaimed', confLabel:'No Q2 Hilton charges through Jun 28',
    trigger:`Any charge at a Hilton portfolio property (room, dining, spa). Hilton gift cards and third-party restaurants excluded.`,
-   note:`Zero Hilton spend in Q2 so far. Your Sonoma trip (Mar 27-30) used Hilton card on non-Hilton properties — those don't count.`,
+   note:`Zero Hilton-property spend on the Hilton Honors Business card in Q2 (Apr 1–Jun 28). Two days left before reset — book any Hilton stay or restaurant charge by Jun 30 to capture the $60. After Jun 30 the Q2 credit is lost; Q3 resets Jul 1.`,
    txns:[], src:'https://www.americanexpress.com/us/credit-cards/business/business-credit-cards/hilton-honors-american-express-business-credit-card-amex/'},
 
-  // ── DELTA GOLD BUSINESS ─────────────────────────────────────
-  {id:'delta-uber', card:'Delta Gold Business', issuer:'amex', cat:'rideshare',
-   name:'Uber One Credit — 6×$9.99 (enroll by Jun 25)', amount:59.94, cadence:'limited-time', cadLabel:'Limited Time',
-   urgency:'critical', due:'Enroll by Jun 25, 2026', dueClass:'urgent',
-   conf:'unclaimed', confLabel:'Enrollment required — not detected',
-   trigger:`Add Delta Gold Business card to Uber. Pay $9.99/month Uber One subscription with this card. Up to 6 months credited. MUST cancel manually after to avoid ongoing charges.`,
-   note:`You have heavy Uber spend on Blue Business Plus and Hilton cards — not on Delta Gold Business. Must use this specific card for the Uber One subscription.`,
-   txns:[], src:'https://www.americanexpress.com/en-us/business/credit-cards/delta-skymiles-gold/'},
+  // ── UNITED QUEST ────────────────────────────────────────────
+  {id:'uq-uber-may', card:'United Quest', issuer:'chase', cat:'rideshare',
+   name:'Rideshare Credit — May ($8)', amount:8, cadence:'monthly', cadLabel:'Monthly',
+   urgency:'low', due:'May 31, 2026', dueClass:'',
+   conf:'confirmed', confLabel:'$31.86 Uber on 5/26 — above $8 threshold',
+   trigger:`Pay any Uber or Lyft ride with this card. $8/month Jan–Nov, $12 in December = $100/year. Annual re-enrollment required.`,
+   note:`✅ Uber $31.86 on 5/26 (UQ ·9805) — well above the $8 threshold. Lyft $2.00 on 5/4 also posted but is below threshold. May $8 statement credit auto-posts.`,
+   txns:[
+     {date:'2026-05-26', merchant:'Uber', amt:31.86, note:'UQ ·9805 — above $8 threshold, credit fires'},
+     {date:'2026-05-04', merchant:'Lyft', amt:2.00, note:'UQ ·9805 — below $8 threshold (informational)'},
+   ], src:'https://creditcards.chase.com/travel-credit-cards/united/united-quest'},
 
+  {id:'uq-uber-jun', card:'United Quest', issuer:'chase', cat:'rideshare',
+   name:'Rideshare Credit — June ($8)', amount:8, cadence:'monthly', cadLabel:'Monthly',
+   urgency:'warning', due:'Jun 30, 2026', dueClass:'warn',
+   conf:'confirmed', confLabel:'$9.99 Uber on 6/11 — above $8 threshold',
+   trigger:`Pay any Uber or Lyft ride with this card. $8/month Jan–Nov, $12 in December.`,
+   note:`✅ Uber $9.99 on 6/11 (UQ ·9805) — above the $8 threshold. June credit auto-posts.`,
+   txns:[
+     {date:'2026-06-11', merchant:'Uber', amt:9.99, note:'UQ ·9805 — above $8 threshold, credit fires'},
+   ], src:'https://creditcards.chase.com/travel-credit-cards/united/united-quest'},
+
+  {id:'uq-instacart-may', card:'United Quest', issuer:'chase', cat:'food',
+   name:'Instacart Credit — May ($10+$5)', amount:10, cadence:'monthly', cadLabel:'Monthly',
+   urgency:'low', due:'May 31, 2026', dueClass:'',
+   conf:'confirmed', confLabel:'$27.93 Instacart on 5/6 — $10 first-order credit fires',
+   trigger:`$10 on first Instacart order + $5 on second Instacart order each month (while Instacart+ active). Must use enrolled card. Through Dec 31, 2027.`,
+   note:`✅ Instacart $27.93 on 5/6 (UQ ·9805) — triggers the $10 first-order credit. No second Instacart charge in May on this card, so the $5 second-order portion did not fire. Counting $10.`,
+   txns:[
+     {date:'2026-05-06', merchant:'Instacart', amt:27.93, note:'UQ ·9805 — first Instacart order, $10 credit fires'},
+   ], src:'https://creditcards.chase.com/travel-credit-cards/united/united-quest'},
+
+  {id:'uq-instacart-jun', card:'United Quest', issuer:'chase', cat:'food',
+   name:'Instacart Credit — June ($10+$5)', amount:15, cadence:'monthly', cadLabel:'Monthly',
+   urgency:'warning', due:'Jun 30, 2026', dueClass:'warn',
+   conf:'unclaimed', confLabel:'No June Instacart on UQ ·9805',
+   trigger:`$10 on first Instacart order + $5 on second Instacart order each month (while Instacart+ active). Must use the United Quest card.`,
+   note:`No Instacart charges on UQ ·9805 in June through Jun 28. Two days left — place one Instacart order on UQ before Jun 30 to capture $10.`,
+   txns:[], src:'https://creditcards.chase.com/travel-credit-cards/united/united-quest'},
+
+  {id:'uq-travelbank-2026', card:'United Quest', issuer:'chase', cat:'travel',
+   name:'$200 United TravelBank Credit — 2026', amount:200, cadence:'anniversary-year', cadLabel:'Anniversary Year',
+   urgency:'low', due:'Jun 24, 2027', dueClass:'',
+   conf:'unclaimed', confLabel:'Plaid can\u2019t verify TravelBank — check united.com manually',
+   trigger:`Use United Quest card for any United Airlines purchase (flights, upgrades, baggage, inflight). $200 posts automatically as TravelBank cash to your MileagePlus account. Resets Jun 24 each year.`,
+   note:`This credit posts to your United MileagePlus TravelBank — NOT as a statement credit. Plaid cannot see TravelBank balances. To verify: log into united.com → MileagePlus → TravelBank, or use the "I claimed this" button below if you've spent it.`,
+   txns:[], src:'https://creditcards.chase.com/travel-credit-cards/united/united-quest'},
+
+  {id:'uq-avis-2026', card:'United Quest', issuer:'chase', cat:'travel',
+   name:'$80 Avis/Budget Rental Credit — 2026', amount:80, cadence:'anniversary-year', cadLabel:'Anniversary Year',
+   urgency:'low', due:'Jun 24, 2027', dueClass:'',
+   conf:'unclaimed', confLabel:'No Avis/Budget rental detected Jan–Jun',
+   trigger:`Book a car rental through cars.united.com using Avis or Budget. Pay with your United Quest card. Statement credit posts automatically.`,
+   note:`No Avis or Budget charges anywhere in your accounts Jan 1–Jun 28. Pure upside if you rent a car through cars.united.com in the next year.`,
+   txns:[], src:'https://www.dailydrop.com/pages/united-card-overhaul'},
+
+  {id:'uq-jsx-2026', card:'United Quest', issuer:'chase', cat:'travel',
+   name:'$150 JSX Credit — 2026', amount:150, cadence:'anniversary-year', cadLabel:'Anniversary Year',
+   urgency:'low', due:'Jun 24, 2027', dueClass:'',
+   conf:'unclaimed', confLabel:'No JSX charges detected Jan–Jun',
+   trigger:`Purchase JSX flights using your United Quest card. Up to $150 back per anniversary year. JSX flies semi-private from private terminals.`,
+   note:`No JSX charges in your accounts Jan 1–Jun 28. Not actionable unless your travel routes align with JSX city pairs.`,
+   txns:[], src:'https://www.dailydrop.com/pages/united-card-overhaul'},
+
+  // ── CHASE SAPPHIRE PREFERRED ─────────────────────────────────
+  {id:'csp-dashpass-may', card:'Chase Sapphire Preferred', issuer:'chase', cat:'food',
+   name:'DashPass Monthly Credit — May ($10)', amount:10, cadence:'monthly', cadLabel:'Monthly',
+   urgency:'low', due:'May 31, 2026', dueClass:'',
+   conf:'unclaimed', confLabel:'No DoorDash charges on CSP ·9707 in May',
+   trigger:`Activate DashPass via Chase app. Use DoorDash for food/grocery orders. $10 monthly statement credit while DashPass is active.`,
+   note:`No DoorDash spend on CSP ·9707 in May. Credit window closed May 31 — likely lost unless DashPass auto-billed (subscription fee itself doesn't qualify).`,
+   txns:[], src:'https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred'},
+
+  {id:'csp-dashpass-jun', card:'Chase Sapphire Preferred', issuer:'chase', cat:'food',
+   name:'DashPass Monthly Credit — June ($10)', amount:10, cadence:'monthly', cadLabel:'Monthly',
+   urgency:'warning', due:'Jun 30, 2026', dueClass:'warn',
+   conf:'unclaimed', confLabel:'No DoorDash charges on CSP ·9707 in June',
+   trigger:`Activate DashPass via Chase app. Use DoorDash for food/grocery orders. $10 monthly statement credit while DashPass is active.`,
+   note:`No DoorDash spend on CSP ·9707 in June. One DoorDash charge ($36.32 on 6/25) went to Delta Gold ·2004 instead — wrong card. Use CSP for DoorDash before Jun 30.`,
+   txns:[], src:'https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred'},
+
+  {id:'csp-hotel-2026', card:'Chase Sapphire Preferred', issuer:'chase', cat:'hotel',
+   name:'$50 Chase Travel Hotel Credit — 2026', amount:50, cadence:'anniversary-year', cadLabel:'Anniversary Year',
+   urgency:'low', due:'Apr 8, 2027', dueClass:'',
+   conf:'unclaimed', confLabel:'Not detected in Chase Travel activity Apr–Jun',
+   trigger:`Book a hotel through Chase Travel (chase.com/travel). $50 credit applies to hotels booked through the Chase portal only. Resets Apr 8 each year.`,
+   note:`Window opened Apr 8, 2026 and runs to Apr 8, 2027 — almost a full year remaining. Book a single hotel night via Chase Travel anytime in the next 10 months to capture this. Pure upside.`,
+   txns:[], src:'https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred'},
+
+  {id:'csp-instacart-q2', card:'Chase Sapphire Preferred', issuer:'chase', cat:'food',
+   name:'Instacart Credit — Q2 ($15)', amount:15, cadence:'quarterly', cadLabel:'Quarterly',
+   urgency:'critical', due:'Jun 30, 2026', dueClass:'urgent',
+   conf:'unclaimed', confLabel:'No Q2 Instacart charges on CSP ·9707',
+   trigger:`Up to $15/quarter in Instacart statement credits. Enroll CSP at instacart.com/partnerships/chase and use for any Instacart order while Instacart+ is active. Through Dec 31, 2027.`,
+   note:`No Instacart spend on CSP ·9707 in Q2. Two days left — place one Instacart order on CSP before Jun 30. After Jun 30 the Q2 credit is lost; Q3 resets Jul 1.`,
+   txns:[], src:'https://thepointsguy.com/deals/instacart-express-chase/'},
+
+  // ── FREEDOM FLEX ────────────────────────────────────────────
+  {id:'flex-dashpass-q2', card:'Freedom Flex', issuer:'chase', cat:'food',
+   name:'DashPass Grocery Credit — Q2 ($10)', amount:10, cadence:'quarterly', cadLabel:'Quarterly',
+   urgency:'critical', due:'Jun 30, 2026', dueClass:'urgent',
+   conf:'unclaimed', confLabel:'No qualifying DoorDash grocery on Freedom Flex',
+   trigger:`Use DoorDash for grocery, convenience, or retail orders while enrolled in DashPass. $10 off per quarter — toggle "Chase monthly benefit" at checkout. Applies to non-restaurant orders only.`,
+   note:`No DoorDash grocery on Freedom Flex in Q2. Two days left — place one DashMart/grocery order on Freedom Flex before Jun 30.`,
+   txns:[], src:'https://www.chase.com/digital/resources/terms-of-use/freedom-doordash'},
+
+  // ── INK CASH ·2379 ───────────────────────────────────────────
+  {id:'ink-instacart-may', card:'Ink Cash ·2379', issuer:'chase', cat:'food',
+   name:'Instacart Credit — May (up to $20)', amount:10, cadence:'monthly', cadLabel:'Monthly',
+   urgency:'low', due:'May 31, 2026', dueClass:'',
+   conf:'likely', confLabel:'$9.99 Instacart on 5/17 — credit covers full charge',
+   trigger:`$20/month Instacart statement credit. Enroll Ink Cash card at instacart.com/partnerships/chase. Each Ink Cash card gets its own $20 separately.`,
+   note:`Instacart $9.99 on 5/17 (Ink ·2379) — entire charge covered by the $20 credit. The credit applies up to the order amount, so this captures ~$10 of the $20 May benefit, not the full $20. Counting $10 as captured.`,
+   txns:[
+     {date:'2026-05-17', merchant:'Instacart', amt:9.99, note:'Ink ·2379 — $20 credit covers full $9.99 charge'},
+   ], src:'https://creditcards.chase.com/business-credit-cards/ink/cash'},
+
+  {id:'ink-instacart-jun', card:'Ink Cash ·2379', issuer:'chase', cat:'food',
+   name:'Instacart Credit — June ($20)', amount:20, cadence:'monthly', cadLabel:'Monthly',
+   urgency:'warning', due:'Jun 30, 2026', dueClass:'warn',
+   conf:'unclaimed', confLabel:'No June Instacart on Ink ·2379',
+   trigger:`$20/month Instacart statement credit. Use Ink ·2379 for any Instacart order before month-end.`,
+   note:`No Instacart spend on Ink ·2379 in June through Jun 28. Two days left — place one Instacart order on this card before Jun 30 to capture up to $20.`,
+   txns:[], src:'https://creditcards.chase.com/business-credit-cards/ink/cash'},
+
+  // ── INK CASH ·2394 ───────────────────────────────────────────
+  {id:'ink2-instacart-may', card:'Ink Cash ·2394', issuer:'chase', cat:'food',
+   name:'Instacart Credit — May ($20)', amount:20, cadence:'monthly', cadLabel:'Monthly',
+   urgency:'low', due:'May 31, 2026', dueClass:'',
+   conf:'unclaimed', confLabel:'No May Instacart on Ink ·2394',
+   trigger:`$20/month Instacart statement credit. This is a separate Ink Cash card (·2394) — enroll it separately at instacart.com/partnerships/chase.`,
+   note:`No Instacart spend on Ink ·2394 in May. Credit window closed May 31 — likely lost.`,
+   txns:[], src:'https://creditcards.chase.com/business-credit-cards/ink/cash'},
+
+  {id:'ink2-instacart-jun', card:'Ink Cash ·2394', issuer:'chase', cat:'food',
+   name:'Instacart Credit — June ($20)', amount:20, cadence:'monthly', cadLabel:'Monthly',
+   urgency:'warning', due:'Jun 30, 2026', dueClass:'warn',
+   conf:'unclaimed', confLabel:'No June Instacart on Ink ·2394',
+   trigger:`$20/month Instacart statement credit. Use Ink ·2394 specifically.`,
+   note:`No Instacart spend on Ink ·2394 in June. Place one Instacart order on this card before Jun 30 — pure upside, zero annual fee.`,
+   txns:[], src:'https://creditcards.chase.com/business-credit-cards/ink/cash'},
+
+  // ── SOUTHWEST RAPID REWARDS PLUS ─────────────────────────────
+  {id:'sw-dashpass-q2', card:'Southwest Rapid Rewards Plus', issuer:'chase', cat:'food',
+   name:'DashPass Grocery Credit — Q2 ($10)', amount:10, cadence:'quarterly', cadLabel:'Quarterly',
+   urgency:'critical', due:'Jun 30, 2026', dueClass:'urgent',
+   conf:'unclaimed', confLabel:'No qualifying DoorDash grocery on SW Plus',
+   trigger:`Use DoorDash for grocery, convenience, or retail orders while enrolled in DashPass. $10 off per quarter.`,
+   note:`No DoorDash grocery on SW Plus in Q2. Two days left — place one DashMart/grocery order on SW Plus before Jun 30.`,
+   txns:[], src:'https://creditcards.chase.com/travel-credit-cards/southwest/plus'},
+
+  {id:'sw-instacart-may', card:'Southwest Rapid Rewards Plus', issuer:'chase', cat:'food',
+   name:'Instacart Credit — May ($10)', amount:10, cadence:'monthly', cadLabel:'Monthly',
+   urgency:'low', due:'May 31, 2026', dueClass:'',
+   conf:'unclaimed', confLabel:'No May Instacart on SW Plus',
+   trigger:`Up to $120/year in Instacart credits ($10/month). Use SW Plus card for any Instacart order.`,
+   note:`No Instacart spend on SW Plus in May. Credit window closed May 31 — likely lost.`,
+   txns:[], src:'https://creditcards.chase.com/travel-credit-cards/southwest/plus'},
+
+  {id:'sw-instacart-jun', card:'Southwest Rapid Rewards Plus', issuer:'chase', cat:'food',
+   name:'Instacart Credit — June ($10)', amount:10, cadence:'monthly', cadLabel:'Monthly',
+   urgency:'warning', due:'Jun 30, 2026', dueClass:'warn',
+   conf:'unclaimed', confLabel:'No June Instacart on SW Plus',
+   trigger:`Up to $120/year in Instacart credits ($10/month). Use SW Plus card for any Instacart order before Jun 30.`,
+   note:`No Instacart spend on SW Plus in June through Jun 28. Place one Instacart order on this card before Jun 30 to capture $10.`,
+   txns:[], src:'https://creditcards.chase.com/travel-credit-cards/southwest/plus'},
+
+  // ── DELTA GOLD #2 ────────────────────────────────────────────
+  {id:'delta2-stays', card:'Delta Gold Business #2', issuer:'amex', cat:'hotel',
+   name:'$150 Delta Stays Credit — 2026', amount:150, cadence:'calendar-year', cadLabel:'Calendar Year',
+   urgency:'low', due:'Dec 31, 2026', dueClass:'',
+   conf:'confirmed', confLabel:'TRANSFER_IN −$150 on 3/12 retained — credit claimed',
+   trigger:`Book a prepaid hotel or vacation rental at delta.com/stays. Amex limits this credit to one per cardmember per year across all Delta cards.`,
+   note:`✅ Credit earned: Delta charge $230.23 on 3/12 triggered the $150 Delta Stays statement credit, which posted as TRANSFER_IN −$150 on 3/12 and was retained. The duplicate posting on Delta Gold #1 was reversed by Amex. Full $150 claimed for 2026 — no further action needed this year.`,
+   txns:[
+     {date:'2026-03-12', merchant:'Delta', amt:230.23, note:'Delta Stays charge — triggered credit on card #2'},
+     {date:'2026-03-12', merchant:'Statement Credit', amt:-150.00, note:'TRANSFER_IN — Delta Stays $150 credit posted (retained)'},
+   ], src:'https://www.americanexpress.com/en-us/business/credit-cards/delta-skymiles-gold/'},
+
+  // ── EXPIRED — hidden behind "Show expired" toggle ────────────
   {id:'delta-stays', card:'Delta Gold Business', issuer:'amex', cat:'hotel',
    name:'$150 Delta Stays Credit — 2026', amount:150, cadence:'calendar-year', cadLabel:'Calendar Year',
    urgency:'low', due:'Dec 31, 2026', dueClass:'',
    conf:'clawed-back', confLabel:'Credit posted 3/12, reversed 3/13 — duplicate of card #2',
-   trigger:`Book a prepaid hotel or vacation rental at delta.com/stays. Select "Pay Now". Booking date (not travel date) triggers credit. Amex limits this credit to one per cardmember per calendar year, regardless of how many Delta cards you hold.`,
+   trigger:`Book a prepaid hotel or vacation rental at delta.com/stays. Amex limits this credit to one per cardmember per calendar year, regardless of how many Delta cards you hold.`,
    note:`⚠️ Credit was clawed back. Delta charge $230.23 on 3/11 triggered the credit (−$150 TRANSFER_IN posted 3/12), but Amex reversed it on 3/13 (+$150 LOAN_PAYMENTS) because the Delta Gold #2 card had already triggered its own −$150 credit on 3/12. Amex enforces one Delta Stays credit per cardmember per year across all Delta cards. Net for 2026: $150 retained on card #2, $0 on this card.`,
    txns:[
      {date:'2026-03-11', merchant:'Delta', amt:230.23, note:'Delta Stays charge — triggered credit'},
      {date:'2026-03-12', merchant:'Statement Credit', amt:-150.00, note:'TRANSFER_IN — Delta Stays $150 credit posted'},
      {date:'2026-03-13', merchant:'Statement Credit (reversal)', amt:150.00, note:'LOAN_PAYMENTS — Amex clawed back the $150 (duplicate)'},
    ], src:'https://thepointsguy.com/credit-cards/delta-amex-stays-credit/'},
-
-  // ── UNITED QUEST ────────────────────────────────────────────
-  {id:'uq-uber-apr', card:'United Quest', issuer:'chase', cat:'rideshare',
-   name:'Rideshare Credit — April ($8)', amount:8, cadence:'monthly', cadLabel:'Monthly',
-   urgency:'critical', due:'Apr 30, 2026', dueClass:'urgent',
-   conf:'likely', confLabel:'$17.32 Uber charge on Apr 5 — credit should auto-apply',
-   trigger:`Pay any Uber or Lyft ride with this card. $8/month Jan–Nov, $12 in December = $100/year. Annual re-enrollment required. Use the United Quest card specifically.`,
-   note:`$17.32 Uber charge on United Quest Apr 5 — above the $8 threshold, credit should post automatically. Note: most of your April Uber spend ($34.54, $30.40, $43.50, $16.50, $9.98 on Apr 1–6) is going to Blue Business Plus, not United Quest.`,
-   txns:[
-     {date:'2026-04-05', merchant:'Uber', amt:17.32, note:'On United Quest — above $8 threshold, credit should auto-apply'},
-     {date:'2026-03-19', merchant:'Uber', amt:49.20, note:'On United Quest — Mar (prior month)'},
-     {date:'2026-03-18', merchant:'Uber', amt:34.02, note:'On United Quest — Mar (prior month)'},
-   ], src:'https://creditcards.chase.com/travel-credit-cards/united/united-quest'},
-
-  {id:'uq-instacart-apr', card:'United Quest', issuer:'chase', cat:'food',
-   name:'Instacart Credit — April ($10+$5)', amount:15, cadence:'monthly', cadLabel:'Monthly',
-   urgency:'critical', due:'Apr 30, 2026', dueClass:'urgent',
-   conf:'unclaimed', confLabel:'No April Instacart charges detected',
-   trigger:`$10 on first Instacart order + $5 on second Instacart order each month (while Instacart+ active). Must use this enrolled card. Through Dec 31, 2027.`,
-   note:`No Instacart spend on United Quest in April yet. Prior months showed $21.87 (3/12), $7.75 (3/13) — confirms card is enrolled. Use United Quest for Instacart this month before Apr 30.`,
-   txns:[
-     {date:'2026-03-12', merchant:'Instacart', amt:21.87, note:'On United Quest — likely 1st order after $10 credit applied'},
-     {date:'2026-03-13', merchant:'Instacart', amt:7.75, note:'On United Quest — likely 2nd order after $5 credit applied'},
-     {date:'2026-03-13', merchant:'Instacart', amt:0.37, note:'Small residual charge'},
-   ], src:'https://creditcards.chase.com/travel-credit-cards/united/united-quest'},
-  {id:'uq-travelbank-2026', card:'United Quest', issuer:'chase', cat:'travel',
-   name:'$200 United TravelBank Credit — 2026', amount:200, cadence:'anniversary-year', cadLabel:'Anniversary Year',
-   urgency:'low', due:'Jun 24, 2027', dueClass:'',
-   conf:'unclaimed', confLabel:'No United TravelBank credit detected yet',
-   trigger:`Use United Quest card for any United Airlines purchase (flights, upgrades, baggage, inflight). $200 posts automatically as TravelBank cash to your MileagePlus account. Resets Jun 24 each year.`,
-   note:`Changed from $125 statement credit to $200 United TravelBank cash as of Mar 24, 2025. TravelBank cash applies to future United bookings at united.com. Your card opened Jun 24, 2025 so benefit year runs Jun 24, 2026. Check your MileagePlus account for current TravelBank balance.`,
-   txns:[], src:'https://creditcards.chase.com/travel-credit-cards/united/united-quest'},
-
-  {id:'uq-avis-2026', card:'United Quest', issuer:'chase', cat:'travel',
-   name:'$80 Avis/Budget Rental Credit — 2026', amount:80, cadence:'anniversary-year', cadLabel:'Anniversary Year',
-   urgency:'low', due:'Jun 24, 2027', dueClass:'',
-   conf:'unclaimed', confLabel:'No Avis/Budget rental detected',
-   trigger:`Book a car rental through cars.united.com using Avis or Budget. Pay with your United Quest card. Statement credit posts automatically. Up to $80/anniversary year.`,
-   note:`New benefit added in the April 2026 United card overhaul. Book through cars.united.com (not directly on Avis/Budget site) to qualify. Pure upside if you rent a car through United anyway.`,
-   txns:[], src:'https://www.dailydrop.com/pages/united-card-overhaul'},
-
-  {id:'uq-jsx-2026', card:'United Quest', issuer:'chase', cat:'travel',
-   name:'$150 JSX Credit — 2026', amount:150, cadence:'anniversary-year', cadLabel:'Anniversary Year',
-   urgency:'low', due:'Jun 24, 2027', dueClass:'',
-   conf:'unclaimed', confLabel:'No JSX charges detected',
-   trigger:`Purchase JSX flights using your United Quest card. Up to $150 back as a statement credit per anniversary year. JSX operates semi-private flights out of private terminals — no TSA lines.`,
-   note:`New benefit added in the April 2026 United card overhaul. JSX flies between major city pairs (Dallas, LA, Las Vegas, NYC, Miami, etc.) from private terminals. If you ever fly a JSX route, this covers most of a ticket. Not actionable unless your travel routes align.`,
-   txns:[], src:'https://www.dailydrop.com/pages/united-card-overhaul'},
-
-
-  // ── CHASE SAPPHIRE PREFERRED ─────────────────────────────────
-  {id:'csp-dashpass-apr', card:'Chase Sapphire Preferred', issuer:'chase', cat:'food',
-   name:'DashPass Monthly Credit — April ($10)', amount:10, cadence:'monthly', cadLabel:'Monthly',
-   urgency:'critical', due:'Apr 30, 2026', dueClass:'urgent',
-   conf:'unclaimed', confLabel:'No DoorDash charges detected this month',
-   trigger:`Activate DashPass via Chase app. Use DoorDash for food/grocery orders. $10 monthly statement credit while DashPass is active. Activate at chase.com if not yet done.`,
-   note:`No DoorDash spend detected on CSP this month. Expires Apr 30 — use DoorDash before month-end to claim.`,
-   txns:[], src:'https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred'},
-
-  {id:'csp-hotel-2026', card:'Chase Sapphire Preferred', issuer:'chase', cat:'hotel',
-   name:'$50 Chase Travel Hotel Credit — 2026', amount:50, cadence:'anniversary-year', cadLabel:'Anniversary Year',
-   urgency:'warning', due:'Apr 8, 2027', dueClass:'warn',
-   conf:'unclaimed', confLabel:'Not detected yet — window just opened Apr 8',
-   trigger:`Book a hotel through Chase Travel (chase.com/travel). $50 credit applies to hotels booked through Chase portal only. Resets on cardmember anniversary (Apr 8). Window just opened.`,
-   note:`CSP annual fee ($95) ALREADY POSTED ~Apr 8, 2026 — you have until ~May 8 to cancel for a full refund if you want out. At +$215 net ($310 credits − $95 fee) with WHOOP included, it's a keeper. Credits: $10/mo DashPass ($120), $50 Chase Travel hotel, $15/quarter Instacart ($60), $100 WHOOP Chase Offer = $330 total minus $95 fee. The $50 hotel credit resets on your cardmember anniversary (Apr 8), so the 2026 credit window just opened.`,
-   txns:[], src:'https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred'},
-
-  {id:'csp-instacart-q2', card:'Chase Sapphire Preferred', issuer:'chase', cat:'food',
-   name:'Instacart Credit — Q2 ($15)', amount:15, cadence:'quarterly', cadLabel:'Quarterly',
-   urgency:'warning', due:'Jun 30, 2026', dueClass:'warn',
-   conf:'unclaimed', confLabel:'No Q2 Instacart charges detected on CSP',
-   trigger:`Up to $15/quarter in Instacart statement credits. Enroll CSP at instacart.com/partnerships/chase and use for any Instacart order while Instacart+ is active. Through Dec 31, 2027.`,
-   note:`CSP has a separate quarterly Instacart credit ($15/quarter = $60/year) distinct from your other Instacart credits on Ink and UQ. This is easy to miss since most Instacart spend may already be going to your Ink cards. Use CSP for one Instacart order in Q2 before Jun 30.`,
-   txns:[], src:'https://thepointsguy.com/deals/instacart-express-chase/'},
-
-  {id:'csp-whoop-2026', card:'Chase Sapphire Preferred', issuer:'chase', cat:'streaming',
-   name:'WHOOP Membership Credit ($100)', amount:100, cadence:'one-time', cadLabel:'One-Time',
-   urgency:'critical', due:'May 12, 2026', dueClass:'urgent',
-   conf:'unclaimed', confLabel:'Not yet activated or purchased',
-   trigger:`Activate the WHOOP offer in Chase Offers BEFORE purchasing. Then buy any WHOOP annual membership at whoop.com using your CSP card. $100 statement credit posts 5–7 business days after purchase. One-time use.`,
-   note:`CSP gets $100 back on any WHOOP annual membership (cheapest tier is $149/year, so net $49). Must activate via Chase Offers first — purchases before activation are NOT eligible. Deadline is May 12, 2026. Existing WHOOP members can use it at renewal or by gifting.`,
-   txns:[], src:'https://www.whoop.com/us/en/chase-sapphire/'},
-
-  // ── FREEDOM FLEX ────────────────────────────────────────────
-  {id:'flex-dashpass-q2', card:'Freedom Flex', issuer:'chase', cat:'food',
-   name:'DashPass Grocery Credit — Q2 ($10)', amount:10, cadence:'quarterly', cadLabel:'Quarterly',
-   urgency:'warning', due:'Jun 30, 2026', dueClass:'warn',
-   conf:'unclaimed', confLabel:'No qualifying DoorDash charges detected',
-   trigger:`Use DoorDash for grocery, convenience, or retail orders while enrolled in DashPass. $10 off per quarter — must be toggled on at checkout. Applies to non-restaurant orders only (groceries, pharmacy, DashMart). Enroll DashPass via Chase app or doordash.com.`,
-   note:`Freedom Flex gets $10/quarter on non-restaurant DoorDash orders — NOT $10/month. This is a Q2 (Apr–Jun) credit, due Jun 30. Use one qualifying grocery or convenience order before Jun 30. Toggle "Chase monthly benefit" at checkout.`,
-   txns:[], src:'https://www.chase.com/digital/resources/terms-of-use/freedom-doordash'},
-
-  // ── INK CASH ─────────────────────────────────────────────────
-  {id:'ink-instacart-apr', card:'Ink Cash ·2379', issuer:'chase', cat:'food',
-   name:'Instacart Credit — April ($20)', amount:20, cadence:'monthly', cadLabel:'Monthly',
-   urgency:'critical', due:'Apr 30, 2026', dueClass:'urgent',
-   conf:'unclaimed', confLabel:'No April Instacart charges on ·2379 yet',
-   trigger:`$20/month Instacart statement credit. Enroll Ink Cash card at instacart.com/partnerships/chase. Use for any Instacart order. Each Ink Cash and Ink Unlimited card gets its own $20 separately.`,
-   note:`No Instacart spend on Ink ·2379 in April yet. Prior months: $4.23 (3/13), $4.62 (2/17) — small residuals after $20 credit, confirms enrollment. Use this card for Instacart before Apr 30.`,
-   txns:[
-     {date:'2026-03-13', merchant:'Instacart', amt:4.23, note:'~$24 order after $20 credit applied'},
-     {date:'2026-02-17', merchant:'Instacart', amt:4.62, note:'~$25 order after $20 credit applied'},
-   ], src:'https://creditcards.chase.com/business-credit-cards/ink/cash'},
-
-  {id:'ink2-instacart-apr', card:'Ink Cash ·2394', issuer:'chase', cat:'food',
-   name:'Instacart Credit — April ($20)', amount:20, cadence:'monthly', cadLabel:'Monthly',
-   urgency:'critical', due:'Apr 30, 2026', dueClass:'urgent',
-   conf:'unclaimed', confLabel:'No April Instacart charges on ·2394 yet',
-   trigger:`$20/month Instacart statement credit. This is a separate Ink Cash card (·2394) — enroll it separately at instacart.com/partnerships/chase to get its own $20.`,
-   note:`Ink Cash ·2394 — if enrolled in Instacart separately, earns another $20/month on top of ·2379. Zero annual fee — pure upside.`,
-   txns:[], src:'https://creditcards.chase.com/business-credit-cards/ink/cash'},
-
-  // ── AMEX BLUE BUSINESS PLUS ──────────────────────────────────
-  // ── SOUTHWEST RAPID REWARDS PLUS ─────────────────────────────
-  {id:'sw-dashpass-q2', card:'Southwest Rapid Rewards Plus', issuer:'chase', cat:'food',
-   name:'DashPass Grocery Credit — Q2 ($10)', amount:10, cadence:'quarterly', cadLabel:'Quarterly',
-   urgency:'warning', due:'Jun 30, 2026', dueClass:'warn',
-   conf:'unclaimed', confLabel:'No qualifying DoorDash charges detected',
-   trigger:`Use DoorDash for grocery, convenience, or retail orders while enrolled in DashPass. $10 off per quarter. Enroll via Chase app.`,
-   note:`SW Plus includes DashPass membership + up to $10/quarter off grocery/convenience/retail orders via DoorDash (not restaurant delivery). Activate DashPass via Chase app if not done.`,
-   txns:[], src:'https://creditcards.chase.com/travel-credit-cards/southwest/plus'},
-
-  {id:'sw-instacart-apr', card:'Southwest Rapid Rewards Plus', issuer:'chase', cat:'food',
-   name:'Instacart Credit — April ($10)', amount:10, cadence:'monthly', cadLabel:'Monthly',
-   urgency:'critical', due:'Apr 30, 2026', dueClass:'urgent',
-   conf:'unclaimed', confLabel:'No April Instacart charges detected',
-   trigger:`Up to $120/year in Instacart credits ($10/month). Enroll SW Plus card at instacart.com/partnerships/chase. Separate enrollment from your other Chase cards.`,
-   note:`SW Plus card has its own $10/month Instacart credit (up to $120/year) — separate from United Quest and Ink Cash credits. Card opened Aug 2025, so this benefit is live. Enroll separately if not done.`,
-   txns:[], src:'https://creditcards.chase.com/travel-credit-cards/southwest/plus'},
-
-  // ── HILTON HONORS BUSINESS (RIDESHARE) ───────────────────────
-  // ── DELTA GOLD #2 ────────────────────────────────────────────
-  {id:'delta2-stays', card:'Delta Gold Business #2', issuer:'amex', cat:'hotel',
-   name:'$150 Delta Stays Credit — 2026', amount:150, cadence:'calendar-year', cadLabel:'Calendar Year',
-   urgency:'low', due:'Dec 31, 2026', dueClass:'',
-   conf:'confirmed', confLabel:'TRANSFER_IN −$150 on 3/12 retained — credit claimed',
-   trigger:`Book a prepaid hotel or vacation rental at delta.com/stays. Same credit as Delta Gold main card. Amex limits this credit to one per cardmember per year across all Delta cards — only one card will retain it.`,
-   note:`✅ Credit earned: Delta charge $230.23 on 3/12 triggered the $150 Delta Stays statement credit, which posted as TRANSFER_IN −$150 on 3/12 and was retained. The duplicate posting on Delta Gold #1 was reversed by Amex (one credit per cardmember per year). Full $150 claimed for 2026 on this card — no further action needed this year.`,
-   txns:[
-     {date:'2026-03-12', merchant:'Delta', amt:230.23, note:'Delta Stays charge — triggered credit on card #2'},
-     {date:'2026-03-12', merchant:'Statement Credit', amt:-150.00, note:'TRANSFER_IN — Delta Stays $150 credit posted (retained)'},
-   ], src:'https://www.americanexpress.com/en-us/business/credit-cards/delta-skymiles-gold/'},
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -1114,8 +1143,8 @@ const RENEWALS = [
     fee:95,
     date:'~Apr 8, 2026',
     status:'posted',
-    statusLabel:'POSTED — Act by ~May 8',
-    cancelWindow:`Annual fee of $95 already posted ~Apr 8. Cancel by ~May 8 for full refund. Net value: +$215 ($310 credits − $95 fee): $120 DashPass monthly, $50 hotel, $60 Instacart quarterly, $100 WHOOP Chase Offer. Strong keeper.`,
+    statusLabel:'POSTED — cancel window closed',
+    cancelWindow:`Annual fee of $95 posted ~Apr 8. Cancel-for-refund window has now closed (~May 8). Theoretical net value: +$215 ($310 credits − $95 fee): $120 DashPass monthly, $50 hotel, $60 Instacart quarterly, $100 WHOOP Chase Offer. Realized so far Apr 8–Jun 28: $0 DoorDash, $0 hotel, $0 Q2 Instacart, $0 WHOOP (expired May 12). Still keep — but need to actually use the DashPass + Instacart credits each month and book a Chase Travel hotel before next anniversary.`,
     cancelUrgent:true,
     src:'https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred'
   },
@@ -1124,9 +1153,9 @@ const RENEWALS = [
     issuer:'Chase',
     fee:350,
     date:'Jun 24, 2026',
-    status:'soon',
-    statusLabel:'~75 days away',
-    cancelWindow:`$350 annual fee posts Jun 24, 2026. Credits: $200 TravelBank, $100 rideshare, $180 Instacart, $80 Avis/Budget, $150 JSX = $710 in credits if fully used. Plus 2 free checked bags. Evaluate which credits you’ll realistically use before renewal.`,
+    status:'posted',
+    statusLabel:'POSTED 4 days ago — cancel by ~Jul 24',
+    cancelWindow:`$350 annual fee posted Jun 24, 2026. You typically have ~30 days for a full refund — cancel by ~Jul 24 if you want out. Credits: $200 TravelBank (opaque), $100 rideshare ($32 captured Jan–Jun so far), $180 Instacart ($60 captured), $80 Avis/Budget (unused), $150 JSX (unused). Realistic capture: ~$92/yr against $350 fee — net −$258 unless you use TravelBank and Avis/JSX. Hardest keep/cancel call this year.`,
     cancelUrgent:false,
     src:'https://creditcards.chase.com/travel-credit-cards/united/united-quest'
   },
@@ -1135,8 +1164,8 @@ const RENEWALS = [
     issuer:'Chase',
     fee:99,
     date:'Aug 28, 2026',
-    status:'upcoming',
-    statusLabel:'~140 days away',
+    status:'soon',
+    statusLabel:'~61 days away',
     cancelWindow:`$99 annual fee posts Aug 28, 2026. Includes 3,000 bonus points on cardmember anniversary. Evaluate companion pass eligibility before canceling.`,
     cancelUrgent:false,
     src:'https://creditcards.chase.com/rewards-credit-cards/southwest/plus'
@@ -1147,7 +1176,7 @@ const RENEWALS = [
     fee:150,
     date:'Nov 2026 (est.)',
     status:'upcoming',
-    statusLabel:'~7 months away',
+    statusLabel:'~5 months away',
     cancelWindow:`$150 annual fee was waived Year 1 (opened Nov 29, 2025). First fee posts Nov 2026. ⚠️ Delta Stays $150 credit was clawed back this year (duplicate of card #2 — Amex enforces one credit per cardmember per year across all Delta cards). Net 2026 value on this card is $0. Strong candidate to cancel before Nov 2026 unless you plan to use the limited-time Uber One credit.`,
     cancelUrgent:false,
     src:'https://www.americanexpress.com/en-us/business/credit-cards/delta-skymiles-gold/'
@@ -1158,7 +1187,7 @@ const RENEWALS = [
     fee:150,
     date:'Jan 2027 (est.)',
     status:'upcoming',
-    statusLabel:'~9 months away',
+    statusLabel:'~7 months away',
     cancelWindow:`$150 annual fee waived Year 1 (opened Jan 14, 2026). First fee posts Jan 2027. ✅ $150 Delta Stays credit retained on this card for 2026 (the duplicate posting on card #1 was reversed). Offsets fee if booked annually. Evaluate before Jan 2027.`,
     cancelUrgent:false,
     src:'https://www.americanexpress.com/en-us/business/credit-cards/delta-skymiles-gold/'
@@ -1169,7 +1198,7 @@ const RENEWALS = [
     fee:195,
     date:'Mar 2027 (est.)',
     status:'upcoming',
-    statusLabel:'~11 months away',
+    statusLabel:'~9 months away',
     cancelWindow:`$195 annual fee. Card opened Mar 13, 2026 — fee posts Mar 2027. Q1+Q2+Q3+Q4 $60 credits = $240 annually. Net positive if you hit all 4 quarters. Marginal at +$45 net. Requires deliberate Hilton spend every quarter — easy to miss Q2 or Q3.`,
     cancelUrgent:false,
     src:'https://www.americanexpress.com/us/credit-cards/business/business-credit-cards/hilton-honors-american-express-business-credit-card-amex/'
@@ -1187,13 +1216,15 @@ const CARDS = [
     annualFee:350,
     feeDate:'Jun 24, 2026',
     benefits:[
-      {name:'Rideshare Credit (Apr)', period:'Monthly', status:'likely', statusLabel:'~$8 earned Apr'},
-      {name:'Instacart $10+$5 (Apr)', period:'Monthly', status:'likely', statusLabel:'~$15 visible Apr'},
-      {name:'$200 TravelBank — 2026', period:'Anniversary Year', status:'warn', statusLabel:'Unclaimed'},
-      {name:'$80 Avis/Budget Credit', period:'Anniversary Year', status:'muted', statusLabel:'New — book via cars.united.com'},
-      {name:'$150 JSX Credit', period:'Anniversary Year', status:'muted', statusLabel:'New — if route aligns'},
-      {name:'Rideshare Credit (Jan–Mar)', period:'Monthly', status:'ok', statusLabel:'✅ $24 earned'},
-      {name:'Instacart (Jan–Mar)', period:'Monthly', status:'ok', statusLabel:'✅ $45 earned'},
+      {name:'Rideshare Credit (Jun)', period:'Monthly', status:'ok', statusLabel:'✅ $8 earned Jun (Uber $9.99 on 6/11)'},
+      {name:'Instacart $10+$5 (Jun)', period:'Monthly', status:'warn', statusLabel:'Unclaimed — due Jun 30'},
+      {name:'Rideshare Credit (May)', period:'Monthly', status:'ok', statusLabel:'✅ $8 earned May (Uber $31.86 on 5/26)'},
+      {name:'Instacart $10+$5 (May)', period:'Monthly', status:'ok', statusLabel:'✅ $10 earned May (Instacart $27.93)'},
+      {name:'$200 TravelBank — 2026', period:'Anniversary Year', status:'muted', statusLabel:'Opaque — check united.com manually'},
+      {name:'$80 Avis/Budget Credit', period:'Anniversary Year', status:'muted', statusLabel:'Unclaimed — book via cars.united.com'},
+      {name:'$150 JSX Credit', period:'Anniversary Year', status:'muted', statusLabel:'Unclaimed — if route aligns'},
+      {name:'Rideshare Credit (Jan–Apr)', period:'Monthly', status:'ok', statusLabel:'✅ $32 earned (Apr inferred from Apr 5 Uber $17.32)'},
+      {name:'Instacart (Jan–Apr)', period:'Monthly', status:'ok', statusLabel:'✅ $60 earned'},
     ]
   },
   {
@@ -1202,10 +1233,11 @@ const CARDS = [
     annualFee:95,
     feeDate:'Posted ~Apr 8, 2026',
     benefits:[
-      {name:'DashPass Credit (Apr)', period:'Monthly', status:'warn', statusLabel:'Unclaimed — due Apr 30'},
-      {name:'$50 Chase Travel Hotel', period:'Anniversary Year', status:'warn', statusLabel:'Window just opened Apr 8'},
-      {name:'WHOOP $100 Credit', period:'One-Time', status:'urgent', statusLabel:'Unclaimed — expires May 12'},
-      {name:'Instacart Credit Q2 ($15)', period:'Quarterly', status:'warn', statusLabel:'Unclaimed — due Jun 30'},
+      {name:'DashPass Credit (Jun)', period:'Monthly', status:'urgent', statusLabel:'Unclaimed — due Jun 30'},
+      {name:'Instacart Credit Q2 ($15)', period:'Quarterly', status:'urgent', statusLabel:'Unclaimed — due Jun 30'},
+      {name:'DashPass Credit (May)', period:'Monthly', status:'muted', statusLabel:'Lapsed — no May DoorDash'},
+      {name:'$50 Chase Travel Hotel', period:'Anniversary Year', status:'muted', statusLabel:'Unclaimed — 10mo remain'},
+      {name:'WHOOP $100 Credit', period:'One-Time', status:'muted', statusLabel:'Expired May 12 — not claimed'},
     ]
   },
   {
@@ -1223,8 +1255,9 @@ const CARDS = [
     annualFee:0,
     feeDate:'No annual fee',
     benefits:[
-      {name:'Instacart $20 (Apr)', period:'Monthly', status:'warn', statusLabel:'Unclaimed — due Apr 30'},
-      {name:'Instacart Jan–Mar', period:'Monthly', status:'ok', statusLabel:'✅ $60 earned'},
+      {name:'Instacart (Jun)', period:'Monthly', status:'warn', statusLabel:'Unclaimed — due Jun 30'},
+      {name:'Instacart (May)', period:'Monthly', status:'likely', statusLabel:'~$10 captured ($9.99 charge)'},
+      {name:'Instacart Jan–Apr', period:'Monthly', status:'ok', statusLabel:'✅ $60 earned Jan–Mar; Apr unconfirmed'},
     ]
   },
   {
@@ -1233,8 +1266,9 @@ const CARDS = [
     annualFee:0,
     feeDate:'No annual fee',
     benefits:[
-      {name:'Instacart $20 (Apr)', period:'Monthly', status:'urgent', statusLabel:'Not claimed — due Apr 30'},
-      {name:'Instacart Feb–Mar', period:'Monthly', status:'ok', statusLabel:'✅ $40 earned'},
+      {name:'Instacart (Jun)', period:'Monthly', status:'warn', statusLabel:'Unclaimed — due Jun 30'},
+      {name:'Instacart (May)', period:'Monthly', status:'muted', statusLabel:'Lapsed — no May charges'},
+      {name:'Instacart Feb–Apr', period:'Monthly', status:'ok', statusLabel:'✅ $40 earned Feb–Mar; Apr unconfirmed'},
     ]
   },
   {
@@ -1254,7 +1288,7 @@ const CARDS = [
     feeDate:'Nov 2026 (Y2)',
     benefits:[
       {name:'$150 Delta Stays — 2026', period:'Calendar Year', status:'clawed', statusLabel:'Clawed back — duplicate'},
-      {name:'Uber One (up to 6mo)', period:'Limited Time', status:'urgent', statusLabel:'Enroll by Jun 25, 2026'},
+      {name:'Uber One (up to 6mo)', period:'Limited Time', status:'muted', statusLabel:'Expired Jun 25 — not enrolled'},
     ]
   },
   {
